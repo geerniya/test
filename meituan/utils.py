@@ -12,15 +12,14 @@ def generate_out_trade_no():
 
 # 生成验证签名和随机数
 def calculate_sign(appsecret, params):
-    random_string_list = [random.randint(string.digits + string.ascii_letters) for i in range(32)]
+    random_string_list = [random.choice(string.digits + string.ascii_letters) for i in range(32)]
     random.shuffle(random_string_list)
     random_string = ''.join(random_string_list)
 
-    params = params.sorted()
     joint_string = '&'.join(['{0}={1}'.format(k, params[k]) for k in sorted(params)]) + '&key={0}'.format(appsecret)
     if six.PY2:
-        sign = hashlib.SHA256(joint_string).hexdigest()
+        sign = hashlib.sha256(joint_string).hexdigest()
     else:
-        sign = hashlib.SHA256(joint_string.encode('utf-8')).hexdigest()
+        sign = hashlib.sha256(joint_string.encode('utf-8')).hexdigest()
 
     return random_string, sign

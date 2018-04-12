@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from base import BaseAPI
-from utils import generate_out_trade_no, MEITUAN
+from utils import generate_out_trade_no
 from exceptions import InvalidAuthCode
 
 class MeituanMicropay(BaseAPI):
@@ -42,15 +42,15 @@ class MeituanMicropay(BaseAPI):
             'authCode': auth_code, 
             'totalFee': total_fee,
             'subject': subject,
-            'body': kwargs['body'] if kwargs['body'] else subject,
+            'body': kwargs['body'] if kwargs.get('body') else subject,
             'channel': channel,
-            'expireMinutes':  kwargs['expireMinutes'] if kwargs['expireMinutesbody'] else 3,
+            'expireMinutes':  kwargs['expireMinutes'] if kwargs.get('expireMinutesbody') else 3,
 
         }
-
-        
-
+    
         return self._post('api/pay/micropay', params=params)
+
+
 
 
 
