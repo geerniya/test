@@ -2,7 +2,7 @@
 
 from base import BaseAPI
 from utils import generate_out_trade_no
-from exceptions import InvalidAuthCode
+from exceptions import InvalidAuthCode, MeituanAPIException
 
 class MeituanMicropay(BaseAPI):
     """
@@ -47,8 +47,14 @@ class MeituanMicropay(BaseAPI):
             'expireMinutes':  kwargs['expireMinutes'] if kwargs.get('expireMinutesbody') else 3,
 
         }
-    
-        return self._post('api/pay/micropay', params=params)
+        try:
+            return self._post('api/pay/micropay', params=params)
+        except MeituanAPIException as e:
+            if e.errCode != 'TRADE_PAY_UNKOWN_ERROR':
+                raise e
+            return e.raw
+       
+        
 
 
 

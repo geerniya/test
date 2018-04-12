@@ -7,11 +7,14 @@ class InvalidAuthCode(Exception):
 
 
 class MeituanAPIException(Exception):
-    def __init__(self, errCode, errMsg, subCode, subMsg):
-        self.errCode = errCode,
-        self.errMsg = errMsg,
-        self.subCode = subCode,
+    def __init__(self, errCode, errMsg, subCode=None, subMsg=None, raw=None):
+        self.errCode = errCode
+        self.errMsg = errMsg
+        self.subCode = subCode
         self.subMsg = subMsg
+        self.raw = raw
+
+  
     
     def __str__(self):
         _str = "Error code: {errCode}, message: {errMsg}. Suberror code: {subCode}, Submessage: {subMsg}".format(
@@ -20,5 +23,5 @@ class MeituanAPIException(Exception):
                 subCode=self.subCode,
                 subMsg=self.subMsg
             )
-
+        
         return _str

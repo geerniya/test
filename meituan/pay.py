@@ -5,6 +5,8 @@ import requests
 from micropay import MeituanMicropay
 from exceptions import InvalidAuthCode, MeituanAPIException
 from utils import calculate_sign
+from order import MeituanOrderAPI
+from refund import MeituanRefundAPI
 
 MEITUAN = {
     'appid': '31161',
@@ -33,6 +35,8 @@ class MeituanPay(object):
         self.merchant_id = merchant_id
 
         self.micropay = MeituanMicropay(self)
+        self.order = MeituanOrderAPI(self)
+        self.refund = MeituanRefundAPI(self)
 
     def _request(self, method, api_endpoint, **kwargs):
         url = '{0}{1}'.format(self.API_BASE_URL, api_endpoint)
@@ -64,13 +68,15 @@ class MeituanPay(object):
             res = res.json()
         except:
             raise InvalidAuthCode("Meituan payment result json parsing error")
-        print(res)
+
         if res['status'] == 'FAIL':
+
             raise MeituanAPIException(
                 errCode=res['errCode'],
                 errMsg=res['errMsg'],
                 subCode=res['subCode'],
-                subMsg=res['subMsg']
+                subMsg=res['subMsg'],
+                raw=res
             )
 
         return res

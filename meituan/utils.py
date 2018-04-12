@@ -9,6 +9,10 @@ import hashlib
 def generate_out_trade_no():
     return '{0}{1}'.format(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f'), random.randint(100000000000, 999999999999))
 
+# 生成订单退款单号
+def generate_out_refund_no():
+    return datetime.datetime.now().strftime('%Y%m%d%H%M%S%f') 
+
 
 # 生成验证签名和随机数
 def calculate_sign(appsecret, params):
@@ -23,3 +27,5 @@ def calculate_sign(appsecret, params):
         sign = hashlib.sha256(joint_string.encode('utf-8')).hexdigest()
 
     return random_string, sign
+
+
